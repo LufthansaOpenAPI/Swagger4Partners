@@ -1,0 +1,1032 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "LH Partner API",
+    "description": "",
+    "license": {
+      "name": "MIT",
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+    }
+  },
+  "host": "api.lufthansa.com",
+  "basePath": "/v1",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "Client Credentials",
+      "authorizationUrl": "https://api.lufthansa.com/v1/partners/oauth/token"
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/promotions/priceoffers/flights/ond/{origin}/{destination}": {
+      "get": {
+        "description": "Retrieve a best price offer given an origin and destination.",
+        "tags": [
+          "Promotions"
+        ],
+        "operationId": "Price Offers",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "origin",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Departure city. 3-letter IATA city code"
+          },
+          {
+            "name": "destination",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Destination city. 3-letter IATA city code"
+          },
+          {
+            "name": "departureDate",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Departure date in local time of departure airport (YYYY-MM-DD)"
+          },
+          {
+            "name": "returnDate",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Departure date in local time of arrival airport (YYYY-MM-DD)"
+          },
+          {
+            "name": "service",
+            "in": "query",
+            "required": false,
+            "default": "amadeusBestPrice",
+            "type": "string",
+            "description": "Optional parameter."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/references/seatdetails/{aircraftCode}/{cabinCode}": {
+      "get": {
+        "description": "A description of all available seat details by aircraft type. You can retrieve the full set or details for a particular aircraft type.",
+        "tags": [
+          "Reference Data"
+        ],
+        "operationId": "Seat Details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "aircraftCode",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Aircraft type. 3-character IATA equipment code"
+          },
+          {
+            "name": "cabinCode",
+            "in": "path",
+            "required": true,
+            "default": "C",
+            "type": "string",
+            "description": "Cabin class: M, E, C, F (Acceptable values are: \"\", \"M\", \"E\", \"C\", \"F\")"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 language code"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/fares/fares": {
+      "get": {
+        "description": "Retrieve all available fares per fare family for a specific Origin & Destination on a given date",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "Fares",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Search fares from these carriers' catalogues - currently active for Germanwings only  (4U)"
+          },
+          {
+            "name": "segments",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey details  e.g. (origin=TXL;destination=CGN;travel-date=2016-12-15;return-date=2016-12-20;cabin=Economy)"
+          },
+          {
+            "name": "travelers",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Type and number of travelers e.g. (adult=1;child=1;infant=1)"
+          },
+          {
+            "name": "fare-types",
+            "in": "query",
+            "required": false,
+            "default": "basic",
+            "type": "string",
+            "description": "Fares family: basic,smart, best, smartflex, bestflex - Germanwings only (Acceptable values are: \"\", \"basic\", \"smart\", \"best\", \"smartflex\", \"bestflex\")"
+          },
+          {
+            "name": "carriers",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Include fares for these carriers e.g. ('4U;LH')"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/fares/allfares": {
+      "get": {
+        "description": "Retrieves all available fares for a specific Origin & Destination pair on a given date. Available fares are: One-way and Return for 4U. Return only for OS",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "All Fares",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Specifies in which catalogue the fares need to be searched (e.g.'4U;OS')."
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Enter journey origin (e.g 'FRA')."
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Enter journey destination (e.g 'MAD')."
+          },
+          {
+            "name": "travel-date",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Enter journey travel-date (e.g 2016-10-20)"
+          },
+          {
+            "name": "return-date",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Enter journey return-date (e.g 2016-10-31)'."
+          },
+          {
+            "name": "cabin-class",
+            "in": "query",
+            "required": false,
+            "default": "economy",
+            "type": "string",
+            "description": "Enter the required cabin class (e.g econonmy, business etc.). (Acceptable values are: \"\", \"economy\", \"premium economy\", \"business\", \"first\")"
+          },
+          {
+            "name": "travelers",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Specifies the type and number of travelers (e.g. '(adult=2;child=2;infant=1)') For LH only (adult=1) possible."
+          },
+          {
+            "name": "fare-family",
+            "in": "query",
+            "required": false,
+            "default": "smart",
+            "type": "string",
+            "description": "Mandatory for 4U. Specifies, which fares to be returned, such as basic, smart, best, smartflex, bestflex . (Acceptable values are: \"\", \"basic\", \"smart\", \"best\", \"smartflex\", \"bestflex\")"
+          },
+          {
+            "name": "trackingid",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Austrian Airlines only - specify the web tracking id to be used in OS Deep link."
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "default": "application/json",
+            "type": "string",
+            "description": "Mandatory http header:  application/xml or application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/fares/lowestfares": {
+      "get": {
+        "description": "Retrieve lowest fare for a specific Origin & Destination pair on a given date. Available fares are: One-way and Return for 4U. Return only for OS & LH",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "Lowest Fares",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Search fares from these carriers' catalogues e.g. '4U;OS;LH'"
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey origin. 3-letter IATA aiport code e.g. 'FRA'"
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey destination. 3-letter IATA airport code e.g. 'MAD'"
+          },
+          {
+            "name": "travel-date",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey travel-date YYYY-MM-DD"
+          },
+          {
+            "name": "return-date",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Journey return-date - mandatory for OS and LH searches YYYY-MM-DD"
+          },
+          {
+            "name": "cabin-class",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Cabin class: 'economy', 'premium_economy', 'business', 'first' (Acceptable values are: \"\", \"economy\", \"premium_economy\", \"business\", \"first\")"
+          },
+          {
+            "name": "travelers",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Type and number of travelers e.g. '(adult=2;child=2;infant=1)'. For LH only (adult=1) possible"
+          },
+          {
+            "name": "fare-family",
+            "in": "query",
+            "required": false,
+            "default": "basic",
+            "type": "string",
+            "description": "Fare family: basic, smart, best, smartflex, bestflex - Germanwings only (Acceptable values are: \"\", \"basic\", \"smart\", \"best\", \"smartflex\", \"bestflex\")"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Country code of requestor. 2-letter ISO 3166-1 country code (e.g. 'de')"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/fares/bestfares": {
+      "get": {
+        "description": "Retrieve best fares for the requested journey across multiple days or multiple months.",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "Best Fares",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Search fares from these carriers' catalogues (e.g. '4U;OS;LH')"
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey origin. 3-letter IATA airport code (e.g. 'FRA')"
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey destination. 3-letter IATA airport code (e.g. 'MAD')"
+          },
+          {
+            "name": "travel-date",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey travel-date (YYYY-MM-DD)"
+          },
+          {
+            "name": "cabin-class",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Cabin class: 'economy', 'premium_economy', 'business', 'first' (Acceptable values are: \"\", \"economy\", \"premium_economy\", \"business\", \"first\")"
+          },
+          {
+            "name": "trip-duration",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Trip duration in days (e.g. '7')"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Country code of requestor. 2-letter ISO 3166-1 country code (e.g. 'de')"
+          },
+          {
+            "name": "trackingid",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Austrian Airlines only - specify the web tracking id to be used in OS Deep link."
+          },
+          {
+            "name": "fare-family",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Fare family: basic, smart, best, smartflex, bestflex - Germanwings only (Acceptable values are: \"\", \"basic\", \"smart\", \"best\", \"smartflex\", \"bestflex\")"
+          },
+          {
+            "name": "range",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Fare range: 'byday' or 'bymonth' (Acceptable values are: \"byday\", \"bymonth\")"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/fares/subscriptions": {
+      "get": {
+        "description": "Create a subscription for best price O&D. Receive regular updates on lowest fares",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "Fares Subscription",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey origin. 3-leter IATA airport code (e.g. 'FRA')"
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey destination. 3-letter IATA airport code (e.g. 'MAD')"
+          },
+          {
+            "name": "cabin-class",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Cabin class: 'economy', 'premium_economy', 'business', 'first' (Acceptable values are: \"\", \"economy\", \"premium_economy\", \"business\", \"first\")"
+          },
+          {
+            "name": "trip-duration",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Trip duration in days (e.g. '7')"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Email Address')"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 language code"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 country code"
+          },
+          {
+            "name": "trackingid",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Tracking parameter"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/fares/deeplink": {
+      "get": {
+        "description": "Returns valid deep links for the provided input parameters",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "Deep Links",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Carrier for which the deep link will be created (e.g. 'LH')"
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Journey origin. 3-letter IATA airport or city code (e.g. 'FRA')"
+          },
+          {
+            "name": "origin-name",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Journey origin airport or city name (e.g. 'frankfurt')"
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Journey destination. 3-letter IATA airport or city code (e.g. 'MAD')"
+          },
+          {
+            "name": "destination-name",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Journey destination airport or city name (e.g. 'madrid')"
+          },
+          {
+            "name": "travel-date",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey travel-date (YYYY-MM-DD)"
+          },
+          {
+            "name": "return-date",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Journey return-date (YYYY-MM-DD)"
+          },
+          {
+            "name": "cabin-class",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Cabin class: 'economy', 'premium_economy', 'business', 'first' (Acceptable values are: \"\", \"economy\", \"premium_economy\", \"business\", \"first\")"
+          },
+          {
+            "name": "outbound-segments",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Outbound flight segments in the sequence of travel (e.g. 'LH096;LH480')"
+          },
+          {
+            "name": "return-segments",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Flight segments in the sequence of travel (e.g. 'LH7465;LH431')"
+          },
+          {
+            "name": "travelers",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Type and number of travelers (e.g. '(adult=2;child=2;infant=1)')"
+          },
+          {
+            "name": "fare",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Travel fare (e.g. '1341.45')"
+          },
+          {
+            "name": "net-fare",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Travel net fare. Total fare less taxes and charges (e.g. '1140')"
+          },
+          {
+            "name": "fare-currency",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Fare currency (e.g. 'EUR')"
+          },
+          {
+            "name": "partnerid",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Deep link partner id (e.g. '1247')"
+          },
+          {
+            "name": "encryption-key",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Deep link encryption-key"
+          },
+          {
+            "name": "trackingid",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Deep link tracking ID"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 country code"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 language code"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/ond/route/{origin}/{destination}": {
+      "get": {
+        "description": "Returns LH route origin & destination information",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "OND Route",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": false,
+            "default": "LH",
+            "type": "string",
+            "description": "Carrier for which the OND will be retrieved (e.g. 'LH')"
+          },
+          {
+            "name": "origin",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Enter either the orgin city or orgin country code (e.g 'FRA' or 'DE'). Enter '*' for all"
+          },
+          {
+            "name": "destination",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Enter either the destination city or country code (e.g 'MAD' or 'ES'). Enter '*' for all"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Number of records returned per request. Defaults to 20, maximum is 100 (if a value bigger than 100 is given, 100 will be taken)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Number of records skipped. Defaults to 0"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Mandatory http header:  application/xml or application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/ond/top": {
+      "get": {
+        "description": "Returns LH Top routes per country or across all countries",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "Top OND",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": false,
+            "default": "LH",
+            "type": "string",
+            "description": "Carrier for which the OND will be retrieved (e.g. 'LH')"
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Enter the origin country code (e.g. 'DE'). Leave empty to search Top OND across all countries"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Mandatory http header:  application/xml or application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/ond/status": {
+      "get": {
+        "description": "Returns LH network route status information. Search for recently added or retired routes",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "OND Status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": false,
+            "default": "LH",
+            "type": "string",
+            "description": "Carrier for which the OND will be retrieved (e.g. 'LH')"
+          },
+          {
+            "name": "new-routes",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Enter if newly added routes should be returned in the response. (Acceptable values are: \"\", \"true\", \"false\")"
+          },
+          {
+            "name": "old-routes",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Enter if old (deleted) routes should be returned in the response. (Acceptable values are: \"\", \"true\", \"false\")"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Mandatory http header:  application/xml or application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  }
+}
