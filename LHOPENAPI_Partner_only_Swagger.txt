@@ -14,8 +14,12 @@
   "securityDefinitions": {
     "auth": {
       "type": "oauth2",
-      "flow": "Client Credentials",
-      "authorizationUrl": "https://api.lufthansa.com/v1/partners/oauth/token"
+      "scopes": {
+        "read LH Open API": "read Access"
+      },
+      "flow": "accessCode",
+      "authorizationUrl": "https://api.lufthansa.com/v1/partners/oauth/token",
+      "tokenUrl": "https://api.lufthansa.com/v1/partners/oauth/token"
     }
   },
   "schemes": [
