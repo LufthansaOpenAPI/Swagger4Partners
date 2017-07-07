@@ -5,17 +5,17 @@
     "title": "LH Partner API",
     "description": "",
     "license": {
-      "name": "MIT",
-      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+      "name": "LH",
+      "url": "https://developer.lufthansa.com"
     }
   },
   "host": "api.lufthansa.com",
   "basePath": "/v1",
-  "securityDefinitions": {
+   "securityDefinitions": {
     "auth": {
       "type": "oauth2",
       "scopes": {
-        "read LH Open API": "read Access"
+        "read:LH Open API": "read access"
       },
       "flow": "accessCode",
       "authorizationUrl": "https://api.lufthansa.com/v1/partners/oauth/token",
@@ -35,6 +35,7 @@
     "/promotions/priceoffers/flights/ond/{origin}/{destination}": {
       "get": {
         "description": "Retrieve a best price offer given an origin and destination.",
+        "summary": "Price Offers",
         "tags": [
           "Promotions"
         ],
@@ -62,14 +63,14 @@
             "in": "query",
             "required": true,
             "type": "string",
-            "description": "Departure date in local time of departure airport (YYYY-MM-DD)"
+            "description": "Departure date in local time (YYYY-MM-DD)"
           },
           {
             "name": "returnDate",
             "in": "query",
             "required": true,
             "type": "string",
-            "description": "Departure date in local time of arrival airport (YYYY-MM-DD)"
+            "description": "Return date in local time (YYYY-MM-DD)"
           },
           {
             "name": "service",
@@ -105,6 +106,7 @@
     "/references/seatdetails/{aircraftCode}/{cabinCode}": {
       "get": {
         "description": "A description of all available seat details by aircraft type. You can retrieve the full set or details for a particular aircraft type.",
+        "summary": "Seat Details",
         "tags": [
           "Reference Data"
         ],
@@ -121,6 +123,13 @@
             "description": "Aircraft type. 3-character IATA equipment code"
           },
           {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          },
+          {
             "name": "cabinCode",
             "in": "path",
             "required": true,
@@ -134,6 +143,160 @@
             "required": false,
             "type": "string",
             "description": "2-letter ISO 3166-1 language code"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/orders/orders/{orderID}/{name}": {
+      "get": {
+        "description": "Retrieve order by ID and optionally name. This service is only accessible for LH privileged partners",
+        "summary": "Orders",
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "Orders",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orderID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique order identifier"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Surname of traveller"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/preflight/autocheckin/{ticketnumber}": {
+      "put": {
+        "description": "Trigger an automatic check-in given a ticket number. This service is only accessible for LH privileged partners",
+        "summary": "Auto Check-In",
+        "tags": [
+          "Preflight"
+        ],
+        "operationId": "Auto Check-In",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ticketnumber",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ticket number"
+          },
+          {
+            "name": "emailAddress",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Email address"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/baggage/baggagetripandcontact/{searchID}": {
+      "get": {
+        "description": "Retrieve passenger trip, contact and baggage details. This service is only accessible for LH privileged partners",
+        "summary": "Baggage Trip and Contact",
+        "tags": [
+          "Baggage"
+        ],
+        "operationId": "Baggage Trip and Contact",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "searchID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Bag tag number, PNR, boarding card or FQTV ID"
           },
           {
             "name": "Accept",
@@ -168,6 +331,7 @@
     "/offers/fares/fares": {
       "get": {
         "description": "Retrieve all available fares per fare family for a specific Origin & Destination on a given date",
+        "summary": "Fares",
         "tags": [
           "Offers"
         ],
@@ -191,6 +355,20 @@
             "description": "Journey details  e.g. (origin=TXL;destination=CGN;travel-date=2016-12-15;return-date=2016-12-20;cabin=Economy)"
           },
           {
+            "name": "carriers",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Include fares for these carriers e.g. ('4U;LH')"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          },
+          {
             "name": "travelers",
             "in": "query",
             "required": false,
@@ -204,20 +382,6 @@
             "default": "basic",
             "type": "string",
             "description": "Fares family: basic,smart, best, smartflex, bestflex - Germanwings only (Acceptable values are: \"\", \"basic\", \"smart\", \"best\", \"smartflex\", \"bestflex\")"
-          },
-          {
-            "name": "carriers",
-            "in": "query",
-            "required": true,
-            "type": "string",
-            "description": "Include fares for these carriers e.g. ('4U;LH')"
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
           }
         ],
         "responses": {
@@ -245,6 +409,7 @@
     "/offers/fares/allfares": {
       "get": {
         "description": "Retrieves all available fares for a specific Origin & Destination pair on a given date. Available fares are: One-way and Return for 4U. Return only for OS",
+        "summary": "All Fares",
         "tags": [
           "Offers"
         ],
@@ -352,6 +517,7 @@
     "/offers/fares/lowestfares": {
       "get": {
         "description": "Retrieve lowest fare for a specific Origin & Destination pair on a given date. Available fares are: One-way and Return for 4U. Return only for OS & LH",
+        "summary": "Lowest Fares",
         "tags": [
           "Offers"
         ],
@@ -389,6 +555,13 @@
             "description": "Journey travel-date YYYY-MM-DD"
           },
           {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          },
+          {
             "name": "return-date",
             "in": "query",
             "required": false,
@@ -423,13 +596,6 @@
             "required": false,
             "type": "string",
             "description": "Country code of requestor. 2-letter ISO 3166-1 country code (e.g. 'de')"
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
           }
         ],
         "responses": {
@@ -457,6 +623,7 @@
     "/offers/fares/bestfares": {
       "get": {
         "description": "Retrieve best fares for the requested journey across multiple days or multiple months.",
+        "summary": "Best Fares",
         "tags": [
           "Offers"
         ],
@@ -494,18 +661,32 @@
             "description": "Journey travel-date (YYYY-MM-DD)"
           },
           {
-            "name": "cabin-class",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "description": "Cabin class: 'economy', 'premium_economy', 'business', 'first' (Acceptable values are: \"\", \"economy\", \"premium_economy\", \"business\", \"first\")"
-          },
-          {
             "name": "trip-duration",
             "in": "query",
             "required": true,
             "type": "string",
             "description": "Trip duration in days (e.g. '7')"
+          },
+          {
+            "name": "range",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Fare range: 'byday' or 'bymonth' (Acceptable values are: \"byday\", \"bymonth\")"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          },
+          {
+            "name": "cabin-class",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Cabin class: 'economy', 'premium_economy', 'business', 'first' (Acceptable values are: \"\", \"economy\", \"premium_economy\", \"business\", \"first\")"
           },
           {
             "name": "country",
@@ -527,20 +708,6 @@
             "required": false,
             "type": "string",
             "description": "Fare family: basic, smart, best, smartflex, bestflex - Germanwings only (Acceptable values are: \"\", \"basic\", \"smart\", \"best\", \"smartflex\", \"bestflex\")"
-          },
-          {
-            "name": "range",
-            "in": "query",
-            "required": true,
-            "type": "string",
-            "description": "Fare range: 'byday' or 'bymonth' (Acceptable values are: \"byday\", \"bymonth\")"
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
           }
         ],
         "responses": {
@@ -568,10 +735,11 @@
     "/offers/fares/subscriptions": {
       "get": {
         "description": "Create a subscription for best price O&D. Receive regular updates on lowest fares",
+        "summary": "Fares Subscriptions",
         "tags": [
           "Offers"
         ],
-        "operationId": "Fares Subscription",
+        "operationId": "Fares Subscriptions",
         "produces": [
           "application/json"
         ],
@@ -619,6 +787,13 @@
             "description": "2-letter ISO 3166-1 language code"
           },
           {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          },
+          {
             "name": "country",
             "in": "query",
             "required": false,
@@ -631,6 +806,90 @@
             "required": false,
             "type": "string",
             "description": "Tracking parameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/fares/deeplink/ffp": {
+      "get": {
+        "description": "Returns valid LH deep links (FFP - links to flight selection screen on LH.COM)",
+        "summary": "LH Deep Links - FFP",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "LH Deep Links - FFP",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Carrier for which the deep link will be created (e.g. 'LH')"
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey origin. 3-letter IATA airport or city code (e.g. 'FRA')"
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey destination. 3-letter IATA airport or city code (e.g. 'MAD')"
+          },
+          {
+            "name": "travel-date",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey travel-date (YYYY-MM-DD)"
+          },
+          {
+            "name": "trackingid",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Deep link tracking ID"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 country code"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 language code"
           },
           {
             "name": "Accept",
@@ -638,6 +897,202 @@
             "required": true,
             "type": "string",
             "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          },
+          {
+            "name": "return-date",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Journey return-date (YYYY-MM-DD)"
+          },
+          {
+            "name": "cabin-class",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Cabin class: 'economy', 'premium_economy', 'business', 'first' (Acceptable values are: \"\", \"economy\", \"premium_economy\", \"business\", \"first\")"
+          },
+          {
+            "name": "travelers",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Type and number of travelers (e.g. '(adult=2;child=2;infant=1)')"
+          },
+          {
+            "name": "partnerid",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Deep link partner id (e.g. '1247')"
+          },
+          {
+            "name": "encryption-key",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Deep link encryption-key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/offers/fares/deeplink/itco": {
+      "get": {
+        "description": "Returns valid LH deep links (ITCO - links to shopping cart on LH.COM)",
+        "summary": "LH Deep Links - ITCO",
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "LH Deep Links - ITCO",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Carrier for which the deep link will be created (e.g. 'LH')"
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey origin. 3-letter IATA airport or city code (e.g. 'FRA')"
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey destination. 3-letter IATA airport or city code (e.g. 'MAD')"
+          },
+          {
+            "name": "travel-date",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Journey travel-date (YYYY-MM-DD)"
+          },
+          {
+            "name": "outbound-segments",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Outbound flight segments in the sequence of travel (e.g. 'LH096;LH480')"
+          },
+          {
+            "name": "fare",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Travel fare (e.g. '1341.45')"
+          },
+          {
+            "name": "fare-currency",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Fare currency (e.g. 'EUR')"
+          },
+          {
+            "name": "trackingid",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Deep link tracking ID"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 country code"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 language code"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
+          },
+          {
+            "name": "return-date",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Journey return-date (YYYY-MM-DD)"
+          },
+          {
+            "name": "cabin-class",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Cabin class: 'economy', 'premium_economy', 'business', 'first' (Acceptable values are: \"\", \"economy\", \"premium_economy\", \"business\", \"first\")"
+          },
+          {
+            "name": "return-segments",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Flight segments in the sequence of travel (e.g. 'LH7465;LH431')"
+          },
+          {
+            "name": "travelers",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Type and number of travelers (e.g. '(adult=2;child=2;infant=1)')"
+          },
+          {
+            "name": "net-fare",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Travel net fare. Total fare less taxes and charges (e.g. '1140')"
+          },
+          {
+            "name": "partnerid",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Deep link partner id (e.g. '1247')"
+          },
+          {
+            "name": "encryption-key",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Deep link encryption-key"
           }
         ],
         "responses": {
@@ -665,6 +1120,7 @@
     "/offers/fares/deeplink": {
       "get": {
         "description": "Returns valid deep links for the provided input parameters",
+        "summary": "Deep Links",
         "tags": [
           "Offers"
         ],
@@ -679,6 +1135,34 @@
             "required": true,
             "type": "string",
             "description": "Carrier for which the deep link will be created (e.g. 'LH')"
+          },
+          {
+            "name": "trackingid",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Deep link tracking ID"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 country code"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "2-letter ISO 3166-1 language code"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
           },
           {
             "name": "origin",
@@ -711,7 +1195,7 @@
           {
             "name": "travel-date",
             "in": "query",
-            "required": true,
+            "required": false,
             "type": "string",
             "description": "Journey travel-date (YYYY-MM-DD)"
           },
@@ -784,34 +1268,6 @@
             "required": false,
             "type": "string",
             "description": "Deep link encryption-key"
-          },
-          {
-            "name": "trackingid",
-            "in": "query",
-            "required": true,
-            "type": "string",
-            "description": "Deep link tracking ID"
-          },
-          {
-            "name": "country",
-            "in": "query",
-            "required": true,
-            "type": "string",
-            "description": "2-letter ISO 3166-1 country code"
-          },
-          {
-            "name": "lang",
-            "in": "query",
-            "required": true,
-            "type": "string",
-            "description": "2-letter ISO 3166-1 language code"
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "http header: application/json or application/xml (Acceptable values are: \"application/json\", \"application/xml\")"
           }
         ],
         "responses": {
@@ -839,6 +1295,7 @@
     "/offers/ond/route/{origin}/{destination}": {
       "get": {
         "description": "Returns LH route origin & destination information",
+        "summary": "OND Route",
         "tags": [
           "Offers"
         ],
@@ -847,14 +1304,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "catalogues",
-            "in": "query",
-            "required": false,
-            "default": "LH",
-            "type": "string",
-            "description": "Carrier for which the OND will be retrieved (e.g. 'LH')"
-          },
           {
             "name": "origin",
             "in": "path",
@@ -870,6 +1319,21 @@
             "description": "Enter either the destination city or country code (e.g 'MAD' or 'ES'). Enter '*' for all"
           },
           {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Mandatory http header:  application/xml or application/json"
+          },
+          {
+            "name": "catalogues",
+            "in": "query",
+            "required": false,
+            "default": "LH",
+            "type": "string",
+            "description": "Carrier for which the OND will be retrieved (e.g. 'LH')"
+          },
+          {
             "name": "limit",
             "in": "query",
             "required": false,
@@ -882,13 +1346,6 @@
             "required": false,
             "type": "string",
             "description": "Number of records skipped. Defaults to 0"
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "Mandatory http header:  application/xml or application/json"
           }
         ],
         "responses": {
@@ -916,6 +1373,7 @@
     "/offers/ond/top": {
       "get": {
         "description": "Returns LH Top routes per country or across all countries",
+        "summary": "Top OND",
         "tags": [
           "Offers"
         ],
@@ -924,6 +1382,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Mandatory http header:  application/xml or application/json"
+          },
           {
             "name": "catalogues",
             "in": "query",
@@ -938,13 +1403,6 @@
             "required": false,
             "type": "string",
             "description": "Enter the origin country code (e.g. 'DE'). Leave empty to search Top OND across all countries"
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "Mandatory http header:  application/xml or application/json"
           }
         ],
         "responses": {
@@ -972,6 +1430,7 @@
     "/offers/ond/status": {
       "get": {
         "description": "Returns LH network route status information. Search for recently added or retired routes",
+        "summary": "OND Status",
         "tags": [
           "Offers"
         ],
@@ -980,6 +1439,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Mandatory http header:  application/xml or application/json"
+          },
           {
             "name": "catalogues",
             "in": "query",
@@ -1001,13 +1467,6 @@
             "required": false,
             "type": "string",
             "description": "Enter if old (deleted) routes should be returned in the response. (Acceptable values are: \"\", \"true\", \"false\")"
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "Mandatory http header:  application/xml or application/json"
           }
         ],
         "responses": {
